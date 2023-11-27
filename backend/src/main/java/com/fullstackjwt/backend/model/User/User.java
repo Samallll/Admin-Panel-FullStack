@@ -1,10 +1,7 @@
 package com.fullstackjwt.backend.model.User;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +12,7 @@ import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "user_table")
 public class User implements UserDetails {
@@ -69,12 +67,4 @@ public class User implements UserDetails {
         return true;
     }
 
-    public User(Integer id, String firstName, String lastName, String email, String password, Role role) {
-        Id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
 }
