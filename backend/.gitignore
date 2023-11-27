@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore application-dev.yml in the config directory
+src/main/resources/application-dev.yml
