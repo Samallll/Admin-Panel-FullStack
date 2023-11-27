@@ -15,9 +15,8 @@ import java.util.List;
 @Data
 @Builder
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "user_table")
 public class User implements UserDetails {
 
     @Id
@@ -68,5 +67,14 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User(Integer id, String firstName, String lastName, String email, String password, Role role) {
+        Id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 }
