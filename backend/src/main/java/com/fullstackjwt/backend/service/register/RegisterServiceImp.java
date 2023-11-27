@@ -55,7 +55,7 @@ public class RegisterServiceImp implements RegisterService{
                         request.getPassword()
                 )
         );
-        
+
         var user = userRepository.findByEmail(request.getEmail())
                         .orElseThrow(()->new UsernameNotFoundException("User Not Found"));
         String jwtToken = jwtService.generateToken(user);

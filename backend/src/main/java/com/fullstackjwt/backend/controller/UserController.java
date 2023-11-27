@@ -29,7 +29,6 @@ public class UserController {
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ){
-        System.out.println("Inside controller");
         return ResponseEntity.ok(registerServiceImp.authenticate(request));
     }
 }
