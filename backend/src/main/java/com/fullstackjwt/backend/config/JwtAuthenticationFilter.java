@@ -1,7 +1,7 @@
 package com.fullstackjwt.backend.config;
 
 import com.fullstackjwt.backend.service.JwtService;
-import com.fullstackjwt.backend.service.user.UserServiceDetails;
+import com.fullstackjwt.backend.service.user.UserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
 
     @Autowired
-    private UserServiceDetails userDetailsService;
+    private UserDetailsService userDetailsService;
 
     public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
