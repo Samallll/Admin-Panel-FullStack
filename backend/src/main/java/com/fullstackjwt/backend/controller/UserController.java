@@ -6,10 +6,7 @@ import com.fullstackjwt.backend.dto.RegisterRequest;
 import com.fullstackjwt.backend.service.register.RegisterServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -30,5 +27,12 @@ public class UserController {
             @RequestBody AuthenticationRequest request
     ){
         return ResponseEntity.ok(registerServiceImp.authenticate(request));
+    }
+
+    @GetMapping("/testing")
+    public ResponseEntity<String> testSecured(@RequestBody AuthenticationRequest request) {
+
+        System.out.println("Email from the request is:"+request.getEmail());
+        return ResponseEntity.ok("Hello from un-secured Endpoint");
     }
 }

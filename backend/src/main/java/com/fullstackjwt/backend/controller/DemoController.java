@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/demo/demo-controller")
+@RequestMapping("/api/v1/general")
 public class DemoController {
 
-    @GetMapping
+    @GetMapping("/login")
     public ResponseEntity<String> sayHello(){
-        return ResponseEntity.ok("Hello from secured end point");
+        return ResponseEntity.ok("Hello from secured login");
+    }
+
+    @GetMapping("/register")
+    public ResponseEntity<String> sayHi(){
+        return ResponseEntity.ok("Hello from secured register");
     }
 }
