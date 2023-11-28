@@ -1,7 +1,9 @@
 
 import React, { useState } from 'react';
 import './Register.css';
-import instance from '../../../services/api';
+import request from '../../../services/api';
+import { setAuthHeader } from '../../../services/api';
+import { Link, useNavigate } from "react-router-dom";
 
 function Register(){
 
@@ -12,22 +14,33 @@ function Register(){
         password: '',
     });
 
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
     setFormData({
-         ...formData, [e.target.name]: e.target.value 
+         ...formData, 
+         [e.target.name]: e.target.value 
         });
     };
 
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-        try {
-            const apiUrl = '/register';
-            const response = await instance.post(apiUrl, formData);
-            console.log('Registration successful:', response.data);
-          } catch (error) {
-            console.error('Registration failed:', error.message);
-          }
+        setAuthHeader(null);
+        request(
+            "POST",
+            "/common/register",
+            formData
+        ).then(() => {
+            navigate('/login')
+        }).catch((error) => {
+            setFormData({
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: ''
+            });
+        });
     };
 
     return (
@@ -70,7 +83,14 @@ function Register(){
             onChange={handleChange}
             />
         </label>
-        <button type="submit">Register</button>
+        <div className='buttons'>
+            <button type="submit">Register</button>
+            <Link to={"/login"}>
+                <button>
+                    Login
+                </button>
+            </Link>
+        </div>
         </form>
     </div>
     );

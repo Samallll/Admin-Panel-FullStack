@@ -1,10 +1,28 @@
 import axios from "axios";
 
-const instance = axios.create({
-    baseURL: 'http://localhost:8080/v1/api',
-    headers: {
-        'Content-Type': 'application/json',
-      }
-});
+export const getAuthToken = () => {
+  return window.localStorage.getItem('auth_token');
+};
 
-export default instance;
+export const setAuthHeader = (token) => {
+  window.localStorage.setItem('auth_token', token);
+};
+
+axios.defaults.baseURL = 'http://localhost:8080/api/v1/auth';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+const request = (method, url, data) => {
+
+    let headers = {};
+    if (getAuthToken() !== null && getAuthToken() !== "null") {
+        headers = {'Authorization': `Bearer ${getAuthToken()}`};
+    }
+
+    return axios({
+        method: method,
+        url: url,
+        headers: headers,
+        data: data});
+};
+
+export default request;

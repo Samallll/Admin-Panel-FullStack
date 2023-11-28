@@ -39,3 +39,8 @@
     background-color: #0056b3;
   }
   
+  .buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }

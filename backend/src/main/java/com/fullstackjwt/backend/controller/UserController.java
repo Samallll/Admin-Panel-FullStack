@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/auth/common")
 public class UserController {
 
     @Autowired
@@ -27,12 +27,5 @@ public class UserController {
             @RequestBody AuthenticationRequest request
     ){
         return ResponseEntity.ok(registerServiceImp.authenticate(request));
-    }
-
-    @GetMapping("/testing")
-    public ResponseEntity<String> testSecured(@RequestBody AuthenticationRequest request) {
-
-        System.out.println("Email from the request is:"+request.getEmail());
-        return ResponseEntity.ok("Hello from un-secured Endpoint");
     }
 }
