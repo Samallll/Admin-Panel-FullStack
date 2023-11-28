@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import './Register.css';
+import instance from '../../../services/api';
 
 function Register(){
 
@@ -17,9 +18,16 @@ function Register(){
         });
     };
 
-    const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Registration form submitted:', formData);
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+        try {
+            const apiUrl = '/register';
+            const response = await instance.post(apiUrl, formData);
+            console.log('Registration successful:', response.data);
+          } catch (error) {
+            console.error('Registration failed:', error.message);
+          }
     };
 
     return (
