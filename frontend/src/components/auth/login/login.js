@@ -1,18 +1,23 @@
 
 import React, { useState } from 'react';
 import './Login.css';
-import request from '../../../services/api';
-import { setAuthHeader } from '../../../services/api';
-import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../../features/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
 
-  const [error,setError] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {isLoading,error} = useSelector((state)=>state.auth);
+
+  // const [error,setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,31 +26,20 @@ const Login = () => {
         });
   };
 
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    request(
-      "POST",
-      "/common/authenticate",
-      formData).then(
-      (response) => {
-          setAuthHeader(response.data.token);
-          navigate('/')
-      }).catch(
-      (error) => {
-        setError(error)
-        setFormData({
-          email: '',
-          password: ''
-        })
-      });
-  };
+    dispatch(loginUser(formData,navigate));
+    setFormData({
+      email: '',
+      password: '',
+    })
+  }
 
   return (
     <div className="login-container">
       <h2>Login</h2>
       {error!==null && <p className='error'>Username or password is incorrect!</p>}
+      {isLoading && <p style={{ color: 'green',textAlign:'center',fontSize:20 }}>Loading...</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Email:
@@ -66,7 +60,9 @@ const Login = () => {
           />
         </label>
         <div className='buttons'>
-          <button type="submit">Login</button>
+          <button type="submit">
+            Login
+          </button>
           <Link to={"/register"}>
             <button>
               Register

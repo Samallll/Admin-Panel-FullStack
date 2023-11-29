@@ -2,6 +2,7 @@ package com.fullstackjwt.backend.service.register;
 
 import com.fullstackjwt.backend.dto.AuthenticationRequest;
 import com.fullstackjwt.backend.dto.AuthenticationResponse;
+import com.fullstackjwt.backend.dto.LoginResponse;
 import com.fullstackjwt.backend.dto.RegisterRequest;
 import com.fullstackjwt.backend.model.User.Role;
 import com.fullstackjwt.backend.model.User.User;
@@ -10,11 +11,14 @@ import com.fullstackjwt.backend.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * This service provides the method for registering an user and
+ * handling the login.
+ */
 @Service
 @RequiredArgsConstructor
 public class RegisterServiceImp implements RegisterService{
@@ -26,6 +30,7 @@ public class RegisterServiceImp implements RegisterService{
     private final JwtService jwtService;
 
     private final AuthenticationManager authManager;
+
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
@@ -47,7 +52,7 @@ public class RegisterServiceImp implements RegisterService{
     }
 
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public LoginResponse authenticate(AuthenticationRequest request) {
 
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -59,8 +64,9 @@ public class RegisterServiceImp implements RegisterService{
         var user = userRepository.findByEmail(request.getEmail())
                         .orElseThrow(()->new UsernameNotFoundException("User Not Found"));
         String jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
+        return LoginResponse.builder()
                 .token(jwtToken)
+                .user(user)
                 .build();
     }
 }

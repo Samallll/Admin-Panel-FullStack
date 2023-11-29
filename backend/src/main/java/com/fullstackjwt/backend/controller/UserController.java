@@ -2,6 +2,7 @@ package com.fullstackjwt.backend.controller;
 
 import com.fullstackjwt.backend.dto.AuthenticationRequest;
 import com.fullstackjwt.backend.dto.AuthenticationResponse;
+import com.fullstackjwt.backend.dto.LoginResponse;
 import com.fullstackjwt.backend.dto.RegisterRequest;
 import com.fullstackjwt.backend.service.register.RegisterServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
+    public ResponseEntity<LoginResponse> authenticate(
             @RequestBody AuthenticationRequest request
     ){
         return ResponseEntity.ok(registerServiceImp.authenticate(request));
