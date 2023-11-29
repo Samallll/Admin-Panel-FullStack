@@ -16,11 +16,10 @@ const Header = () => {
   }
 
   return (
-    <header className="header">
-      <h1>{loggedUser ? `Welcome ${loggedUser.firstName}..` : 'Guest'}</h1>
-
+    <header className="header" style={{ marginBottom: '20px' }}>
+      <h2>{loggedUser ? `Welcome ${loggedUser.firstName}..` : 'Guest'}</h2>
       <nav>
-        <ul>
+        <ul className='mb-0'>
           <li onClick={logout}>Logout</li>
         </ul>
       </nav>

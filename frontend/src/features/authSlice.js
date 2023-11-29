@@ -45,7 +45,7 @@ export const loginUser = (credentials,navigate) => {
                     dispatch(setLoggedUser(response.data.user));
                     setAuthHeader(response.data.token);
                     dispatch(setIsLoading(false))
-                    navigate("/")
+                    response.data.user.role === 'ADMIN' ? navigate("/adminHome") : navigate("/userHome");
                 }).catch((error)=>{
                     dispatch(setError(error.message))
                 });
