@@ -35,9 +35,10 @@ function UserList(){
                 `/admin/deleteUser/${id}`,
                 {}
             ).then(()=>{
+                setUsersList(prevUsersList => prevUsersList.filter(user => user.id !== id));
                 console.log("Completed")
-            }).catch(()=>{
-
+            }).catch((error)=>{
+                console.log(error.message);
             })
         }
     }

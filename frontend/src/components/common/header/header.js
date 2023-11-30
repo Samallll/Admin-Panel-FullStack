@@ -16,7 +16,7 @@ const Header = () => {
   }
 
   return (
-    <header className="header" style={{ marginBottom: '20px' }}>
+    <header className="header">
       <h2>{loggedUser ? `Welcome ${loggedUser.firstName}..` : 'Guest'}</h2>
       <nav>
         <ul className='mb-0'>

@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from '../../common/header/Header'
-import Footer from '../../common/footer/Footer'
 import { useSelector } from 'react-redux';
 import UserList from '../userList/UserList';
 
@@ -11,7 +10,7 @@ function AdminHome() {
   return (
     <div className='background-setup'>
         <Header/>
-            <div className='container mt-5'>
+            <div className='container mt-5 pt-2'>
                 {loggedUser && loggedUser.role === 'ADMIN' ? 
                 <div className='container mt-5'>
                     <UserList/>
@@ -20,7 +19,6 @@ function AdminHome() {
                 <h1 style={{color:'red',position:'relative',top:'150px'}}>No Access to this page!!</h1>
                 }
             </div>
-        <Footer/>
     </div>
   )
 }
