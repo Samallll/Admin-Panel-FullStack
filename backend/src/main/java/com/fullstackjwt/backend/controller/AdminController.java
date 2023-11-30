@@ -44,8 +44,12 @@ public class AdminController {
             userDetailsService.deleteUser(userId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RuntimeException e) {
-            // Handle exceptions and return an appropriate response
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/searchUser/{query}")
+    public ResponseEntity<List<User>> searchUser(@PathVariable String query){
+        return ResponseEntity.ok(userDetailsService.searchUser(query));
     }
 }

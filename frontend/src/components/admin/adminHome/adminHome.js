@@ -10,7 +10,7 @@ function AdminHome() {
   return (
     <div className='background-setup'>
         <Header/>
-            <div className='container mt-5 pt-2'>
+            <div className='container mt-5'>
                 {loggedUser && loggedUser.role === 'ADMIN' ? 
                 <div className='container mt-5'>
                     <UserList/>

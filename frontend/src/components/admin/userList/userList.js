@@ -36,11 +36,26 @@ function UserList(){
                 {}
             ).then(()=>{
                 setUsersList(prevUsersList => prevUsersList.filter(user => user.id !== id));
-                console.log("Completed")
             }).catch((error)=>{
                 console.log(error.message);
             })
         }
+    }
+
+    const searchUser = (e) => {
+        const query = e.target.value;
+        if (query.trim() === ''){
+            return
+        }
+        request(
+            "GET",
+            `/admin/searchUser/${query}`,
+            {}
+        ).then((response)=>{
+            setUsersList(response.data)
+        }).catch((error)=>{
+            console.log(error.message)
+        })
     }
 
 
@@ -49,11 +64,15 @@ function UserList(){
         <div className="container">
             <div className="card">
                 <div className="card-title">
-                    <h2>Users List</h2>
+                    <h2 className='mt-4'>Users List</h2>
                 </div>
                 <div className="card-body">
-                    <div className="divbtn">
+                    <div className="divbtn d-flex justify-content-between mx-3 mb-4">
                         <Link to="/admin/user/create" className="btn btn-success">Add New (+)</Link>
+                        <input type='text' 
+                            placeholder='Search User'  
+                            onChange={searchUser} 
+                            style={{maxWidth:'500px'}}/>
                     </div>
                     <table className="table table-bordered mt-3">
                         <thead className="bg-dark text-white">

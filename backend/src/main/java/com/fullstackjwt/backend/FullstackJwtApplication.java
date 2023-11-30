@@ -24,7 +24,7 @@ public class FullstackJwtApplication {
 		return args -> {
 			if(userRepository.findByRole(Role.ADMIN).isPresent()) return;
 
-//			Creating a admin role when the application executes if there is no admins.
+//			Creating an admin role when the application executes if there is no admins.
 
 			User admin = new User("admin","admin","admin@example.com",encoder.encode("admin"), Role.ADMIN);
 			userRepository.save(admin);

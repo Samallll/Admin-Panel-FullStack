@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,5 +42,13 @@ public class UserDetailsService implements UserService{
 
     public void deleteUser(Integer userId) {
         userRepository.deleteById(userId);
+    }
+
+    public List<User> searchUser(String query) {
+        
+        if(query.isBlank()){
+            return userRepository.findAll();
+        }
+        return userRepository.findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query,query,query);
     }
 }
