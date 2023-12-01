@@ -14,6 +14,7 @@ function Register(){
         password: '',
     });
 
+    const [error,setError] = useState("");
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -25,14 +26,26 @@ function Register(){
 
     const handleSubmit = async (e) => {
 
+        if(Object.values(formData).some(value => value === null || value === '')){
+            return;
+        }
         e.preventDefault();
         setAuthHeader(null);
         request(
             "POST",
             "/common/register",
             formData
-        ).then(() => {
-            navigate('/login')
+        ).then((response) => {
+            if(response.data.includes("success")){
+                navigate('/login')
+            }
+            else{
+                setError("Email Id exists")
+                setFormData({
+                    ...formData,
+                    email: '',
+                });
+            }
         }).catch((error) => {
             setFormData({
                 firstname: '',
@@ -46,6 +59,12 @@ function Register(){
     return (
     <div className="register-container">
         <h2>Register</h2>
+        {error && <p style={{
+            textAlign:"center",
+            color:"red",
+            marginTop:"25px",
+            marginBottom:"10px"
+            }}>{error}</p>}
         <form onSubmit={handleSubmit}>
         <label>
             First Name:

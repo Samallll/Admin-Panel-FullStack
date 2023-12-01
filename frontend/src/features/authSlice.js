@@ -3,10 +3,16 @@ import request from "../services/api";
 import { setAuthHeader } from "../services/api";
 
 const initialState = {
-    loggedUser:null,
-    isLoading:false,
-    error:null
-}
+    loggedUser: (() => {
+      try {
+        return JSON.parse(localStorage.getItem('logged_user') || '');
+      } catch {
+        return null;
+      }
+    })(),
+    isLoading: false,
+    error: null,
+  };
 
 const authSlice = createSlice({
     name : "auth",
@@ -15,7 +21,8 @@ const authSlice = createSlice({
         setLoggedUser:(state,action)=>{
             state.loggedUser = action.payload;
             state.isLoading = false;
-            state.error = null;
+            state.error = null;   
+            localStorage.setItem('logged_user', JSON.stringify(state.loggedUser));         
         },
         setError:(state,action)=>{
             state.error = action.payload;
@@ -24,11 +31,22 @@ const authSlice = createSlice({
         setIsLoading:(state,action)=>{
             state.error = null;
             state.isLoading = action.payload;
+        },
+        updateLoggedUser:(state,action)=>{
+            state.loggedUser = {
+                ...state.loggedUser,
+                firstName: action.payload.firstName !== undefined ? action.payload.firstName : state.loggedUser.firstName,
+                lastName: action.payload.lastName !== undefined ? action.payload.lastName : state.loggedUser.lastName,
+                email: action.payload.email !== undefined ? action.payload.email : state.loggedUser.email,
+              };
+              state.isLoading = false;
+              state.error = null;
+              localStorage.setItem('logged_user', JSON.stringify(state.loggedUser));
         }
     }
 })
 
-export const { setError ,setLoggedUser ,setIsLoading } = authSlice.actions;
+export const { setError ,setLoggedUser ,setIsLoading,updateLoggedUser } = authSlice.actions;
 
 //this is an action creator for thunk function, it will return a thunk function
 export const loginUser = (credentials,navigate) => {

@@ -5,10 +5,11 @@ import request from '../../../../services/api';
 function UserCreate() {
 
     const navigate = useNavigate();
+    const [error,setError] = useState("");
 
     const[formData,setFormData] = useState({
-        firstname:"",
-        lastname:"",
+        firstName:"",
+        lastName:"",
         email:"",
         password:""
     });
@@ -21,19 +22,30 @@ function UserCreate() {
         };
     
     const handleSubmit = (e) => {
+        if(Object.values(formData).some(value => value === null || value === '')){
+            return;
+        }
         e.preventDefault();
-        console.log(formData);
         request(
             "POST",
             "/common/register",
             formData
-        ).then(() => {
-            navigate("/adminHome")
+        ).then((response) => {
+            if(response.data.includes("success")){
+                navigate("/adminHome")
+            }
+            else{
+                setError("Email Id exists")
+                setFormData({
+                    ...formData,
+                    email: '',
+                });
+            }
         }).catch((error) => {
             console.log(error)
             setFormData({
-                firstname: '',
-                lastname: '',
+                firstName: '',
+                lastName: '',
                 email: '',
                 password: ''
             });
@@ -53,17 +65,18 @@ function UserCreate() {
                         </div>
                         <div className="card-body">
                             <div className="row">
+                                {error && <p style={{textAlign:"center",color:"red"}}>{error}</p>}
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>First Name</label>
-                                        <input required value={formData.firstname} onChange={handleChange} className="form-control" name="firstname"></input>
+                                        <input required value={formData.firstName} onChange={handleChange} className="form-control" name="firstName"></input>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                         <label>Last Name</label>
-                                        <input required value={formData.lastname} onChange={handleChange} className="form-control" name='lastname'></input>
+                                        <input required value={formData.lastName} onChange={handleChange} className="form-control" name='lastName'></input>
                                     </div>
                                 </div>
 

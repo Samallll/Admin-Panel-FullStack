@@ -11,7 +11,7 @@ public interface UserService extends UserDetailsService {
 
     public List<User> getAllUsers();
 
-    public User editUser(Integer userId, RegisterRequest editData);
+    public String editUser(Integer userId, RegisterRequest editData);
 
     public Optional<User> findUser(Integer userId);
 

@@ -25,12 +25,17 @@ public class User implements UserDetails {
 
     private String lastName;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private String filePath;
+
+    private byte[] profilePicture;
 
     public User(String firstName, String lastName, String email, String password, Role role) {
         this.firstName=firstName;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link,useParams } from 'react-router-dom'
 import request from '../../../../services/api';
+import Header from '../../../common/header/Header'
 
 function UserDetails() {
 
@@ -20,8 +21,12 @@ function UserDetails() {
     },[userId]);
 
   return (
-    <div className='mt-5'>
-        <div className="container">
+    
+    <div>
+        <div>
+            <Header/>
+        </div>
+        <div className="container mt-5">
             <div className="card row p-5" style={{ "textAlign": "left" }}>
                 <div className="card-title">
                     <h2 className='mb-5'>User Details</h2>

@@ -40,6 +40,8 @@ public class SecurityConfig {
                             .permitAll()
                             .requestMatchers("/api/v1/auth/admin/**")
                             .hasAuthority("ADMIN")
+                            .requestMatchers("/api/v1/auth/user/**")
+                            .hasAuthority("USER")
                             .anyRequest()
                             .authenticated()
                 )

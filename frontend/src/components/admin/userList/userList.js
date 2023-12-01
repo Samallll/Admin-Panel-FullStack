@@ -6,23 +6,25 @@ function UserList(){
 
     const [usersList,setUsersList] = useState([]);
 
-    useEffect(()=>{
+    const getAllUsers = () => {
         request(
             "GET",
             "/admin/users",
             {}
         ).then((response)=>{
             setUsersList(response.data);
-            console.log(response.data);
         }).catch((error)=>{
             console.log(error)
         });
+    }
+
+    useEffect(()=>{
+        getAllUsers();
     },[])
 
     const navigate = useNavigate();
 
     const LoadDetail = (id) => {
-        console.log(id);
         navigate("/admin/userDetails/" + id);
     }
     const LoadEdit = (id) => {
@@ -44,8 +46,9 @@ function UserList(){
 
     const searchUser = (e) => {
         const query = e.target.value;
-        if (query.trim() === ''){
-            return
+        if(query.trim() === ''){
+            getAllUsers();
+            return;
         }
         request(
             "GET",
@@ -54,13 +57,12 @@ function UserList(){
         ).then((response)=>{
             setUsersList(response.data)
         }).catch((error)=>{
-            console.log(error.message)
+            console.log(error)
         })
     }
 
 
     return(
-
         <div className="container">
             <div className="card">
                 <div className="card-title">
@@ -71,8 +73,8 @@ function UserList(){
                         <Link to="/admin/user/create" className="btn btn-success">Add New (+)</Link>
                         <input type='text' 
                             placeholder='Search User'  
-                            onChange={searchUser} 
-                            style={{maxWidth:'500px'}}/>
+                            onKeyUp={searchUser} 
+                            style={{maxWidth:'400px'}}/>
                     </div>
                     <table className="table table-bordered mt-3">
                         <thead className="bg-dark text-white">
@@ -105,7 +107,7 @@ function UserList(){
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
 export default UserList;

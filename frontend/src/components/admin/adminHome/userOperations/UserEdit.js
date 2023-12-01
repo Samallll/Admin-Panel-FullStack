@@ -1,40 +1,62 @@
 import React,{useState,useEffect} from 'react'
 import { Link,useNavigate,useParams } from 'react-router-dom'
 import request from '../../../../services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import Header from '../../../common/header/Header';
+import { updateLoggedUser } from '../../../../features/authSlice';
 
 function UserEdit() {
 
     const navigate = useNavigate();
+    const [error,setError] = useState("");
     const {userId} = useParams();
     const[userData,setUserData] = useState({
         id:"",
-        firstname:"",
-        lastname:"",
+        firstName:"",
+        lastName:"",
         email:""
     });
 
+    const {loggedUser} = useSelector((state)=>state.auth)
+    const dispatch = useDispatch()
+
     useEffect(() => {
+        const url = loggedUser.role === "ADMIN" ? `/admin/userDetails/${userId}` : `/user/userDetails/${userId}`;
         request(
             "GET",
-            `/admin/userDetails/${userId}`,
+            url,
             {}
         ).then((resp) => {
             setUserData(resp.data)
         }).catch((err) => {
             console.log(err.message);
         })
-    }, [userId]);
+    }, [userId,loggedUser.role]);
 
     const handleSubmit = (e) => {
+        if(Object.values(userData).some(value => value === null || value === '')){
+            return;
+        }
         e.preventDefault();
-        console.log(userData);
+        const url = loggedUser.role === "ADMIN" ? `/admin/editUser/${userId}` : `/user/editUser/${userId}`;
         request(
             "PUT",
-            `/admin/editUser/${userId}`,
+            url,
             userData
-        ).then(()=>{
-            console.log("server completed")
-            navigate('/adminHome');
+        ).then((response)=>{
+            if(response.data.includes("success")){
+                if(loggedUser.id === userData.id){
+                    dispatch(updateLoggedUser({
+                        firstName:userData.firstName,
+                        lastName:userData.lastName,
+                        email:userData.email
+                    }));
+                }
+                loggedUser.role === "ADMIN" ? navigate("/adminHome") : navigate("/profile")
+            }
+            else{
+                setError("Email Id exists")
+            }
         }).catch((error)=>{
             console.log(error.message);
         })
@@ -49,6 +71,9 @@ function UserEdit() {
 
   return (
     <div>
+        <div>
+            <Header/>
+        </div>
         <div className="row mt-5">
             <div className="offset-lg-3 col-lg-6">
                 <form className="container" onSubmit={handleSubmit}>
@@ -68,19 +93,20 @@ function UserEdit() {
                                 <div className="col-lg-12 mb-3">
                                     <div className="form-group">
                                         <label className='ps-2'>First Name :</label>
-                                        <input required name="firstname" value={userData.firstname} onChange={handleChange} className="form-control"></input>
+                                        <input required name="firstName" value={userData.firstName} onChange={handleChange} className="form-control"></input>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-12 mb-3">
                                     <div className="form-group">
                                         <label className='ps-2'>Last Name :</label>
-                                        <input name='lastname' value={userData.lastname} onChange={handleChange} className="form-control"></input>
+                                        <input name='lastName' value={userData.lastName} onChange={handleChange} className="form-control"></input>
                                     </div>
                                 </div>
 
                                 <div className="col-lg-12 mb-3">
                                     <div className="form-group">
+                                        {error && <p style={{textAlign:"center",color:"red"}}>{error}</p>}
                                         <label className='ps-2'>Email :</label>
                                         <input value={userData.email} onChange={handleChange} className="form-control" name='email'></input>
                                     </div>
@@ -89,7 +115,8 @@ function UserEdit() {
                                 <div className="col-lg-12">
                                     <div className="form-group">
                                        <button className="btn btn-success" type="submit">Save</button>
-                                       <Link to="/adminHome" className="btn btn-danger">Back</Link>
+                                       <Link to={loggedUser.role === "ADMIN" ? "/adminHome" : "/Profile"}
+                                        className="btn btn-danger">Back</Link>
                                     </div>
                                 </div>
                             </div>

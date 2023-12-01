@@ -4,6 +4,7 @@ import './Header.css'
 import { setAuthHeader } from '../../../services/api';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
 
@@ -12,6 +13,7 @@ const Header = () => {
 
   const logout = () => {
     setAuthHeader(null);
+    localStorage.removeItem('logged_user');
     navigate("/login")
   }
 
@@ -20,7 +22,8 @@ const Header = () => {
       <h2>{loggedUser ? `Welcome ${loggedUser.firstName}..` : 'Guest'}</h2>
       <nav>
         <ul className='mb-0'>
-          <li onClick={logout}>Logout</li>
+          <li><Link to="/profile" className="btn btn-secondary">Profile</Link></li>
+          <li onClick={logout} className="btn btn-danger">Logout</li>
         </ul>
       </nav>
     </header>

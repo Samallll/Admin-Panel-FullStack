@@ -6,6 +6,7 @@ import AdminHome from "./components/admin/adminHome/AdminHome";
 import UserCreate from "./components/admin/adminHome/userOperations/UserCreate";
 import UserEdit from "./components/admin/adminHome/userOperations/UserEdit";
 import UserDetails from "./components/admin/adminHome/userOperations/UserDetails";
+import Profile from "./components/common/profile/Profile"
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path='/admin/user/create' Component={UserCreate}></Route>
             <Route path='/admin/userDetails/:userId' Component={UserDetails}></Route>
             <Route path='/admin/editUser/:userId' Component={UserEdit}></Route>
+            <Route path='/profile' Component={Profile}></Route>
           </Routes>
         </Router>
       </div>

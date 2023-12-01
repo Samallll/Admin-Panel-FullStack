@@ -9,20 +9,37 @@ export const setAuthHeader = (token) => {
 };
 
 axios.defaults.baseURL = 'http://localhost:8080/api/v1/auth';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const request = (method, url, data) => {
-
     let headers = {};
+    const formData = new FormData();
+
     if (getAuthToken() !== null && getAuthToken() !== "null") {
         headers = {'Authorization': `Bearer ${getAuthToken()}`};
+
+        if (data.file) {
+            console.log('file exists', data.file);
+            headers['Content-Type'] = 'multipart/form-data';
+
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+            return axios({
+                method: method,
+                url: url,
+                headers: headers,
+                data: formData,
+            });
+        }
     }
 
     return axios({
         method: method,
         url: url,
         headers: headers,
-        data: data});
+        data: data,
+    });
 };
 
 export default request;

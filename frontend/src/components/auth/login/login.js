@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../../../features/authSlice';
 import { useNavigate } from 'react-router-dom';
+import {  setAuthHeader } from '../../../services/api';
 
 const Login = () => {
 
@@ -28,6 +29,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setAuthHeader(null);
     dispatch(loginUser(formData,navigate));
     setFormData({
       email: '',
