@@ -48,9 +48,7 @@ const authSlice = createSlice({
 
 export const { setError ,setLoggedUser ,setIsLoading,updateLoggedUser } = authSlice.actions;
 
-//this is an action creator for thunk function, it will return a thunk function
 export const loginUser = (credentials,navigate) => {
-    // return thunk functin (dispatch,getState) - common structure
     return async (dispatch) => {
                 setAuthHeader(null);
                 dispatch(setIsLoading(true));

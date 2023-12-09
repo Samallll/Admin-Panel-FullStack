@@ -8,8 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 function Register(){
 
     const [formData, setFormData] = useState({
-        firstname: '',
-        lastname: '',
+        firstName: '',
+        lastName: '',
         email: '',
         password: '',
     });
@@ -25,11 +25,11 @@ function Register(){
     };
 
     const handleSubmit = async (e) => {
-
+        e.preventDefault();
         if(Object.values(formData).some(value => value === null || value === '')){
+            setError("Please complete the form")
             return;
         }
-        e.preventDefault();
         setAuthHeader(null);
         request(
             "POST",
@@ -48,8 +48,8 @@ function Register(){
             }
         }).catch((error) => {
             setFormData({
-                firstname: '',
-                lastname: '',
+                firstName: '',
+                lastName: '',
                 email: '',
                 password: ''
             });
@@ -70,8 +70,8 @@ function Register(){
             First Name:
             <input
             type="text"
-            name="firstname"
-            value={formData.firstname}
+            name="firstName"
+            value={formData.firstName}
             onChange={handleChange}
             />
         </label>
@@ -79,8 +79,8 @@ function Register(){
             Last Name:
             <input
             type="text"
-            name="lastname"
-            value={formData.lastname}
+            name="lastName"
+            value={formData.lastName}
             onChange={handleChange}
             />
         </label>

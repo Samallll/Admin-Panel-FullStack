@@ -84,6 +84,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>admin_panel-jar</finalName>
 	</build>
 
 </project>

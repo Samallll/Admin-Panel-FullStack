@@ -34,9 +34,7 @@ function UserEdit() {
     }, [userId,loggedUser.role]);
 
     const handleSubmit = (e) => {
-        if(Object.values(userData).some(value => value === null || value === '')){
-            return;
-        }
+        
         e.preventDefault();
         const url = loggedUser.role === "ADMIN" ? `/admin/editUser/${userId}` : `/user/editUser/${userId}`;
         request(
